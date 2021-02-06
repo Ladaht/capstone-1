@@ -1,0 +1,62 @@
+{% extends 'base.html'  %}
+{% block content2 %}
+                
+    <div class="w3-container w3-card w3-white w3-round"><br>
+       <h4 class="w3-center">Latest Posts </h4><br>
+        <hr class="w3-clear">
+  </div>
+
+  <div>
+    {% for post in posts %}
+    <div class="card my-4">
+      <div class="card-body">
+        <h5 class="card-title text-info">
+          {{post.user.username}}
+          {% if session['user_id'] == post.user_id %}
+          <form style="display:inline;" action="/posts/{{post.id}}" method="POST">
+            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+          </form>
+          {% endif %}
+        </h5>
+        <h6 class="card-subtitle mb-2 text-muted">Date goes here</h6>
+        <p class="card-text">
+          {{post.text}}
+        </p>
+  
+      </div>
+    </div>
+  
+    {%  endfor %}
+  </div>
+{% endblock %}
+
+{% block sidebarhead %}
+          {{countries}}
+{% endblock %}
+          
+{% block sidebar %}
+
+{% for letter in alphabetList %}
+{% if letter != 'X' %} <!--Skip the letter X -->
+
+<h4> {{letter}}</h4>
+
+ <div>
+   
+ {% for item in country_name %}
+ 
+ <!--Jinja supports Python’s string manipulation syntax, so we can leverage that for our sentence casing, ex. word[0:1]-->
+     {% if item[0:1] == letter %}
+
+              <!--{{loop.index}} gets the index from "countries" list--> 
+     <p><a href="{{ url_for('country_view', name_arg=item) }}" id="{{loop.index}}" onclick="findCountryName(id)" >{{item}}</a></p>
+   
+  
+ {% endif %}
+
+{% endfor %} 
+  </div>
+{% endif %}
+{% endfor %}  
+
+{% endblock %}

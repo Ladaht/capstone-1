@@ -1,0 +1,75 @@
+{% extends 'base.html'  %}
+{% block content %}
+
+       <div class="w3-container w3-card w3-white w3-round"><br>
+        <div style="position: absolute;">
+        <img src="https://www.countryflags.io/{{code}}/flat/64.png" alt="Avatar" class="w3-left w3-rounded w3-margin-right" style="width:160px"></div>
+        <span class="w3-right w3-opacity">1 min</span>
+        <div style="position: relative; left: 190px; top: -17px;">
+        <h1>Welcome to {{name1}}!</h1> </h3><i>{{name2}}</i></h3>
+        <h6>Official Language: {{lang}}</h6>
+        <h6>Local Currency: {{cur_symbol}} , {{cur_name}}</h6>
+        <h6><strong>Travel Advisory:</strong> {{advise}}</h6>
+       </div>        
+
+     <div class="w3-container w3-padding">
+          <h6 class="w3-opacity">Create a Post about "location" in {{name1}}:  </h6>
+
+          <form method="POST">
+            {{ form.hidden_tag() }}
+           
+             {% for field in form
+                 if field.widget.input_type != 'hidden' %}
+             <p >
+               {{ field.label }}
+               {{ field(class_="form-control") }}
+    
+               {% for error in field.errors %}
+               <span class="form-text text-danger">{{ error }}</span>
+               {% endfor %} 
+               
+             </p>
+             {% endfor %}
+           
+             <button type="submit" class="btn btn-success"><i class="fa fa-pencil"></i>  Post Trip</button> 
+             <button type="button" class="w3-button w3-theme-d1"><i class="fa fa-thumbs-up"></i>  Like</button> 
+             <button type="button" class="w3-button w3-theme-d1"><i class="fa fa-upload" aria-hidden="true"></i> Images</button> 
+           </form>
+          <ul class="list-inline list-unstyled">
+            <li>
+                 <span><i class="fa fa-facebook-square w3-right"></i></span>
+                 <span><i class="fa fa-twitter-square w3-right "></i></span>
+                 <span><i class="fa fa-google-plus-square w3-right"></i></span>
+               </li>
+         </ul>
+      </div>
+    </div>  
+  </div>     
+    
+          <div>
+            {% for post in posts %}
+            <div class="card my-4">
+              <div class="card-body">
+                <h5 class="card-title text-info">
+                  {{post.user.username}}
+                  {% if session['user_id'] == post.user_id %}
+                  <form style="display:inline;" action="/posts/{{post.id}}" method="POST">
+                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                  </form>
+                  {% endif %}
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">Date goes here</h6>
+                <p class="card-text">
+                  {{post.text}}
+                </p>
+              </div>
+            </div>
+            {%  endfor %}
+      {% endblock %}
+</div>
+  {% block sidebarhead %}
+  
+         <p><strong><a href="/locations">Locations in {{name1}}!</a></strong></p>
+   
+  {% endblock %} 
+
